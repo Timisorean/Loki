@@ -171,6 +171,12 @@ struct EqualTo<const EffectConditionalWhenImpl&>
 };
 
 template<>
+struct EqualTo<const EffectOneofImpl&>
+{
+    bool operator()(const EffectOneofImpl& l, const EffectOneofImpl& r) const;
+};
+
+template<>
 struct EqualTo<const EffectImpl*>
 {
     bool operator()(const EffectImpl* l, const EffectImpl* r) const;

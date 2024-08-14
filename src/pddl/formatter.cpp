@@ -349,6 +349,18 @@ void DefaultFormatter::write(const EffectConditionalWhenImpl& element, const Def
     out << ")";
 }
 
+void DefaultFormatter::write(const EffectOneofImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
+{
+    out << "(oneof ";
+    for (size_t i = 0; i < element.get_effects().size(); ++i)
+    {
+        if (i != 0)
+            out << " ";
+        write(*element.get_effects()[i], options, out);
+    }
+    out << ")";
+}
+
 void DefaultFormatter::write(const EffectImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
 {
     std::visit([this, &options, &out](const auto& arg) { this->write(arg, options, out); }, element);
@@ -733,6 +745,7 @@ template class StreamWriter<EffectAndImpl>;
 template class StreamWriter<EffectNumericImpl>;
 template class StreamWriter<EffectConditionalForallImpl>;
 template class StreamWriter<EffectConditionalWhenImpl>;
+template class StreamWriter<EffectOneofImpl>;
 template class StreamWriter<EffectImpl>;
 template class StreamWriter<FunctionExpressionNumberImpl>;
 template class StreamWriter<FunctionExpressionBinaryOperatorImpl>;

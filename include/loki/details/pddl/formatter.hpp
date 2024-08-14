@@ -57,6 +57,7 @@ public:
     void write(const EffectNumericImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
     void write(const EffectConditionalForallImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
     void write(const EffectConditionalWhenImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
+    void write(const EffectOneofImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
     void write(const EffectImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
     void write(const FunctionExpressionNumberImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;
     void write(const FunctionExpressionBinaryOperatorImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const;

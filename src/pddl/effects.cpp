@@ -98,4 +98,11 @@ const Condition& EffectConditionalWhenImpl::get_condition() const { return m_con
 
 const Effect& EffectConditionalWhenImpl::get_effect() const { return m_effect; }
 
+/* EffectOneofImpl */
+EffectOneofImpl::EffectOneofImpl(size_t index, EffectList effects) : m_index(index), m_effects(std::move(effects)) {}
+
+size_t EffectOneofImpl::get_index() const { return m_index; }
+
+const EffectList& EffectOneofImpl::get_effects() const { return m_effects; }
+
 }

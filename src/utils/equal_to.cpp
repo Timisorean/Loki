@@ -198,6 +198,15 @@ bool EqualTo<const EffectConditionalWhenImpl&>::operator()(const EffectCondition
     return true;
 }
 
+bool EqualTo<const EffectOneofImpl&>::operator()(const EffectOneofImpl& l, const EffectOneofImpl& r) const
+{
+    if (&l != &r)
+    {
+        return (get_sorted_vector(l.get_effects()) == get_sorted_vector(r.get_effects()));
+    }
+    return true;
+}
+
 bool EqualTo<const EffectImpl*>::operator()(const EffectImpl* l, const EffectImpl* r) const { return EqualTo<EffectImpl>()(*l, *r); }
 
 bool EqualTo<const FunctionExpressionNumberImpl&>::operator()(const FunctionExpressionNumberImpl& l, const FunctionExpressionNumberImpl& r) const

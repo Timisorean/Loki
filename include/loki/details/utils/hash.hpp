@@ -195,6 +195,12 @@ struct Hasher<const EffectConditionalWhenImpl&>
 };
 
 template<>
+struct Hasher<const EffectOneofImpl&>
+{
+    size_t operator()(const EffectOneofImpl& e) const;
+};
+
+template<>
 struct Hasher<const EffectImpl*>
 {
     size_t operator()(const EffectImpl* e) const;

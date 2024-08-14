@@ -114,6 +114,8 @@ size_t Hasher<const EffectConditionalWhenImpl&>::operator()(const EffectConditio
     return HashCombiner()(e.get_condition(), e.get_effect());
 }
 
+size_t Hasher<const EffectOneofImpl&>::operator()(const EffectOneofImpl& e) const { return HashCombiner()(get_sorted_vector(e.get_effects())); }
+
 size_t Hasher<const EffectImpl*>::operator()(const EffectImpl* e) const
 {
     return std::visit([](const auto& arg) { return Hasher<decltype(arg)>()(arg); }, *e);
