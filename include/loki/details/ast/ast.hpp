@@ -61,6 +61,7 @@ struct RequirementTimedInitialLiterals;
 struct RequirementPreferences;
 struct RequirementConstraints;
 struct RequirementActionCosts;
+struct RequirementNonDeterministic;
 struct Requirement;
 
 struct Type;
@@ -156,6 +157,8 @@ struct EffectConditionalForall;
 struct EffectConditionalWhen;
 struct EffectConditional;
 struct EffectNumericFluentTotalCostOrEffect;
+struct EffectRootDeterministic;
+struct EffectRootNonDeterministic;
 struct EffectRoot;
 
 struct ActionSymbol;
@@ -341,6 +344,10 @@ struct RequirementActionCosts : x3::position_tagged
 {
 };
 
+struct RequirementNonDeterministic : x3::position_tagged
+{
+};
+
 struct Requirement :
     x3::position_tagged,
     x3::variant<RequirementStrips,
@@ -361,7 +368,8 @@ struct Requirement :
                 RequirementTimedInitialLiterals,
                 RequirementPreferences,
                 RequirementConstraints,
-                RequirementActionCosts>
+                RequirementActionCosts,
+                RequirementNonDeterministic>
 {
     using base_type::base_type;
     using base_type::operator=;
@@ -884,9 +892,20 @@ struct EffectNumericFluentTotalCostOrEffect : x3::position_tagged, x3::variant<E
     using base_type::operator=;
 };
 
-struct EffectRoot :
+struct EffectRootDeterministic :
     x3::position_tagged,
     x3::variant<EffectProduction, EffectConditional, EffectProductionNumericFluentTotalCost, std::vector<EffectNumericFluentTotalCostOrEffect>>
+{
+    using base_type::base_type;
+    using base_type::operator=;
+};
+
+struct EffectRootNonDeterministic : x3::position_tagged
+{
+    std::vector<EffectRootDeterministic> possibilities;
+};
+
+struct EffectRoot : x3::position_tagged, x3::variant<EffectRootDeterministic, EffectRootNonDeterministic>
 {
     using base_type::base_type;
     using base_type::operator=;

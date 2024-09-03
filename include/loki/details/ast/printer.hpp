@@ -61,6 +61,7 @@ extern std::string parse_text(const ast::RequirementTimedInitialLiterals& node, 
 extern std::string parse_text(const ast::RequirementPreferences& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::RequirementConstraints& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::RequirementActionCosts& node, const DefaultFormatterOptions& options = {});
+extern std::string parse_text(const ast::RequirementNonDeterministic& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::Requirement& node, const DefaultFormatterOptions& options = {});
 
 extern std::string parse_text(const ast::Type& node, const DefaultFormatterOptions& options = {});
@@ -156,6 +157,8 @@ extern std::string parse_text(const ast::EffectConditionalForall& node, const De
 extern std::string parse_text(const ast::EffectConditionalWhen& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::EffectConditional& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::EffectNumericFluentTotalCostOrEffect& node, const DefaultFormatterOptions& options = {});
+extern std::string parse_text(const ast::EffectRootDeterministic& node, const DefaultFormatterOptions& options = {});
+extern std::string parse_text(const ast::EffectRootNonDeterministic& node, const DefaultFormatterOptions& options = {});
 extern std::string parse_text(const ast::EffectRoot& node, const DefaultFormatterOptions& options = {});
 
 extern std::string parse_text(const ast::ActionSymbol& node, const DefaultFormatterOptions& options = {});

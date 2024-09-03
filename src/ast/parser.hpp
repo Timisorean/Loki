@@ -75,6 +75,7 @@ struct RequirementTimedInitialLiteralsClass;
 struct RequirementPreferencesClass;
 struct RequirementConstraintsClass;
 struct RequirementActionCostsClass;
+struct RequirementNonDeterministicClass;
 struct RequirementClass;
 
 struct TypeClass;
@@ -172,6 +173,8 @@ struct EffectConditionalForallClass;
 struct EffectConditionalWhenClass;
 struct EffectConditionalClass;
 struct EffectNumericFluentTotalCostOrEffectClass;
+struct EffectRootDeterministicClass;
+struct EffectRootNonDeterministicClass;
 struct EffectRootClass;
 struct ActionSymbolClass;
 struct ActionBodyClass;
@@ -272,6 +275,7 @@ typedef x3::rule<RequirementTimedInitialLiteralsClass, ast::RequirementTimedInit
 typedef x3::rule<RequirementPreferencesClass, ast::RequirementPreferences> requirement_preferences_type;
 typedef x3::rule<RequirementConstraintsClass, ast::RequirementConstraints> requirement_constraints_type;
 typedef x3::rule<RequirementActionCostsClass, ast::RequirementActionCosts> requirement_action_costs_type;
+typedef x3::rule<RequirementNonDeterministicClass, ast::RequirementNonDeterministic> requirement_non_deterministic_type;
 typedef x3::rule<RequirementClass, ast::Requirement> requirement_type;
 
 typedef x3::rule<TypeClass, ast::Type> type_type;
@@ -370,6 +374,8 @@ typedef x3::rule<EffectProductionClass, ast::EffectProduction> effect_production
 typedef x3::rule<EffectConditionalForallClass, ast::EffectConditionalForall> effect_conditional_forall_type;
 typedef x3::rule<EffectConditionalWhenClass, ast::EffectConditionalWhen> effect_conditional_when_type;
 typedef x3::rule<EffectConditionalClass, ast::EffectConditional> effect_conditional_type;
+typedef x3::rule<EffectRootDeterministicClass, ast::EffectRootDeterministic> effect_root_deterministic_type;
+typedef x3::rule<EffectRootNonDeterministicClass, ast::EffectRootNonDeterministic> effect_root_non_deterministic_type;
 typedef x3::rule<EffectRootClass, ast::EffectRoot> effect_root_type;
 typedef x3::rule<EffectNumericFluentTotalCostOrEffectClass, ast::EffectNumericFluentTotalCostOrEffect> effect_numeric_fluent_total_cost_or_effect_type;
 
@@ -470,6 +476,7 @@ BOOST_SPIRIT_DECLARE(requirement_strips_type,
                      requirement_preferences_type,
                      requirement_constraints_type,
                      requirement_action_costs_type,
+                     requirement_non_deterministic_type,
                      requirement_type)
 
 BOOST_SPIRIT_DECLARE(type_type,
@@ -563,6 +570,8 @@ BOOST_SPIRIT_DECLARE(effect_type,
                      effect_conditional_when_type,
                      effect_conditional_type,
                      effect_numeric_fluent_total_cost_or_effect_type,
+                     effect_root_deterministic_type,
+                     effect_root_non_deterministic_type,
                      effect_root_type,
                      action_symbol_type,
                      action_body_type,
@@ -659,6 +668,7 @@ parser::requirement_timed_initial_literals_type const& requirement_timed_initial
 parser::requirement_preferences_type const& requirement_preferences();
 parser::requirement_constraints_type const& requirement_constraints();
 parser::requirement_action_costs_type const& requirement_action_costs();
+parser::requirement_non_deterministic_type const& requirement_non_deterministic();
 parser::requirement_type const& requirement();
 
 parser::type_type const& type();
@@ -756,6 +766,8 @@ parser::effect_conditional_forall_type const& effect_conditional_forall();
 parser::effect_conditional_when_type const& effect_conditional_when();
 parser::effect_conditional_type const& effect_conditional();
 parser::effect_numeric_fluent_total_cost_or_effect_type const& effect_numeric_fluent_total_cost_or_effect();
+parser::effect_root_deterministic_type const& effect_root_deterministic();
+parser::effect_root_non_deterministic_type const& effect_root_non_deterministic();
 parser::effect_root_type const& effect_root();
 
 parser::action_symbol_type const& action_symbol();

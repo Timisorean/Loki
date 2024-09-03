@@ -89,6 +89,7 @@ requirement_timed_initial_literals_type const requirement_timed_initial_literals
 requirement_preferences_type const requirement_preferences = "requirement_preferences";
 requirement_constraints_type const requirement_constraints = "requirement_constraints";
 requirement_action_costs_type const requirement_action_costs = "requirement_action_costs";
+requirement_non_deterministic_type const requirement_non_deterministic = "requirement_non_deterministic";
 requirement_type const requirement = "requirement";
 
 type_type const type = "type";
@@ -188,6 +189,8 @@ effect_conditional_forall_type const effect_conditional_forall = "effect_conditi
 effect_conditional_when_type const effect_conditional_when = "effect_conditional_when";
 effect_conditional_type const effect_conditional = "effect_conditional";
 effect_numeric_fluent_total_cost_or_effect_type const effect_numeric_fluent_total_cost_or_effect = "effect_numeric_fluent_total_cost_or_effect";
+effect_root_deterministic_type const effect_root_deterministic = "effect_root_deterministic";
+effect_root_non_deterministic_type const effect_root_non_deterministic = "effect_root_non_deterministic";
 effect_root_type const effect_root = "effect_root";
 action_symbol_type const action_symbol = "action_symbol";
 action_body_type const action_body = "action_body";
@@ -290,11 +293,12 @@ const auto requirement_timed_initial_literals_def = keyword_lit(":timed-initial-
 const auto requirement_preferences_def = keyword_lit(":preferences") > x3::attr(ast::RequirementPreferences {});
 const auto requirement_constraints_def = keyword_lit(":constraints") > x3::attr(ast::RequirementConstraints {});
 const auto requirement_action_costs_def = keyword_lit(":action-costs") > x3::attr(ast::RequirementActionCosts {});
+const auto requirement_non_deterministic_def = keyword_lit(":non-deterministic") > x3::attr(ast::RequirementNonDeterministic {});
 const auto requirement_def = requirement_strips | requirement_typing | requirement_negative_preconditions | requirement_disjunctive_preconditions
                              | requirement_equality | requirement_existential_preconditions | requirement_universal_preconditions
                              | requirement_quantified_preconditions | requirement_conditional_effects | requirement_fluents | requirement_object_fluents
                              | requirement_numeric_fluents | requirement_adl | requirement_durative_actions | requirement_derived_predicates
-                             | requirement_timed_initial_literals | requirement_preferences | requirement_constraints | requirement_action_costs;
+                             | requirement_timed_initial_literals | requirement_preferences | requirement_constraints | requirement_action_costs | requirement_non_deterministic;
 
 const auto type_def = type_object | type_number | type_either | name;
 const auto type_object_def = keyword_lit("object") > x3::attr(ast::TypeObject {});
@@ -395,8 +399,10 @@ const auto assign_operator_def =
 // For action cost effects only
 const auto numeric_term_def = function_expression_number | function_expression_head;
 
-const auto effect_root_def = ((lit('(') >> keyword_lit("and")) > *effect_numeric_fluent_total_cost_or_effect > lit(')')) | effect_conditional
+const auto effect_root_deterministic_def = ((lit('(') >> keyword_lit("and")) > *effect_numeric_fluent_total_cost_or_effect > lit(')')) | effect_conditional
                              | effect_production | effect_production_numeric_fluent_total_cost;
+const auto effect_root_non_deterministic_def = ((lit('(') >> keyword_lit("oneof")) > *effect_root_deterministic > lit(')'));
+const auto effect_root_def = effect_root_non_deterministic | effect_root_deterministic;
 const auto effect_def = ((lit('(') >> keyword_lit("and")) > *effect > lit(')')) | effect_conditional | effect_production;
 const auto effect_numeric_fluent_total_cost_or_effect_def = effect_production_numeric_fluent_total_cost | effect;
 const auto effect_production_literal_def = literal;
@@ -514,6 +520,7 @@ BOOST_SPIRIT_DEFINE(requirement_strips,
                     requirement_preferences,
                     requirement_constraints,
                     requirement_action_costs,
+                    requirement_non_deterministic,
                     requirement)
 
 BOOST_SPIRIT_DEFINE(type,
@@ -601,6 +608,8 @@ BOOST_SPIRIT_DEFINE(effect,
                     effect_conditional_when,
                     effect_conditional,
                     effect_numeric_fluent_total_cost_or_effect,
+                    effect_root_deterministic,
+                    effect_root_non_deterministic,
                     effect_root,
                     action_symbol,
                     action_body,
@@ -730,6 +739,9 @@ struct RequirementConstraintsClass : x3::annotate_on_success
 {
 };
 struct RequirementActionCostsClass : x3::annotate_on_success
+{
+};
+struct RequirementNonDeterministic : x3::annotate_on_success
 {
 };
 struct RequirementClass : x3::annotate_on_success
@@ -997,6 +1009,12 @@ struct EffectConditionalClass : x3::annotate_on_success
 struct EffectNumericFluentTotalCostOrEffectClass : x3::annotate_on_success
 {
 };
+struct EffectRootDeterministicClass : x3::annotate_on_success
+{
+};
+struct EffectRootNonDeterministicClass : x3::annotate_on_success
+{
+};
 struct EffectRootClass : x3::annotate_on_success
 {
 };
@@ -1217,6 +1235,7 @@ parser::requirement_timed_initial_literals_type const& requirement_timed_initial
 parser::requirement_preferences_type const& requirement_preferences() { return parser::requirement_preferences; }
 parser::requirement_constraints_type const& requirement_constraints() { return parser::requirement_constraints; }
 parser::requirement_action_costs_type const& requirement_action_costs() { return parser::requirement_action_costs; }
+parser::requirement_non_deterministic_type const& requirement_non_deterministic() { return parser::requirement_non_deterministic; }
 parser::requirement_type const& requirement() { return parser::requirement; }
 
 parser::type_type const& type() { return parser::type; }
@@ -1344,6 +1363,8 @@ parser::effect_numeric_fluent_total_cost_or_effect_type const& effect_numeric_fl
 {
     return parser::effect_numeric_fluent_total_cost_or_effect;
 }
+parser::effect_root_deterministic_type const& effect_root_deterministic() { return parser::effect_root_deterministic; }
+parser::effect_root_non_deterministic_type const& effect_root_non_deterministic() { return parser::effect_root_non_deterministic; }
 parser::effect_root_type const& effect_root() { return parser::effect_root; }
 
 parser::action_symbol_type const& action_symbol() { return parser::action_symbol; }

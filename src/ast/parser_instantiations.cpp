@@ -56,6 +56,7 @@ BOOST_SPIRIT_INSTANTIATE(requirement_timed_initial_literals_type, iterator_type,
 BOOST_SPIRIT_INSTANTIATE(requirement_preferences_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(requirement_constraints_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(requirement_action_costs_type, iterator_type, context_type)
+BOOST_SPIRIT_INSTANTIATE(requirement_non_deterministic_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(requirement_type, iterator_type, context_type)
 
 BOOST_SPIRIT_INSTANTIATE(type_type, iterator_type, context_type)
@@ -153,6 +154,8 @@ BOOST_SPIRIT_INSTANTIATE(effect_conditional_forall_type, iterator_type, context_
 BOOST_SPIRIT_INSTANTIATE(effect_conditional_when_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(effect_conditional_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(effect_numeric_fluent_total_cost_or_effect_type, iterator_type, context_type)
+BOOST_SPIRIT_INSTANTIATE(effect_root_deterministic_type, iterator_type, context_type)
+BOOST_SPIRIT_INSTANTIATE(effect_root_non_deterministic_type, iterator_type, context_type)
 BOOST_SPIRIT_INSTANTIATE(effect_root_type, iterator_type, context_type)
 
 BOOST_SPIRIT_INSTANTIATE(action_symbol_type, iterator_type, context_type)
