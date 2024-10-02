@@ -61,19 +61,6 @@ Effect parse(const std::vector<ast::Effect>& effect_nodes, Context& context)
     return context.factories.get_or_create_effect_and(effect_list);
 }
 
-Effect parse(const ast::EffectRootDeterministic& node, Context& context) { return boost::apply_visitor(EffectVisitor(context), node); }
-
-Effect parse(const ast::EffectRootNonDeterministic& node, Context& context) {
-    test_undefined_requirement(RequirementEnum::NON_DETERMINISTIC, node, context);
-    context.references.untrack(RequirementEnum::NON_DETERMINISTIC);
-    auto effect_list = EffectList();
-    for (const auto& effect_node : node.possibilities)
-    {
-        effect_list.push_back(parse(effect_node, context));
-    }
-    return context.factories.get_or_create_effect_oneof(effect_list);
-}
-
 Effect parse(const ast::EffectRoot& node, Context& context) { return boost::apply_visitor(EffectVisitor(context), node); }
 
 Effect parse(const ast::Effect& node, Context& context) { return boost::apply_visitor(EffectVisitor(context), node); }
@@ -120,7 +107,7 @@ Effect parse(const ast::EffectProductionNumericFluentGeneral& node, Context& con
 
 Effect parse(const ast::EffectProduction& node, Context& context) { return boost::apply_visitor(EffectVisitor(context), node); }
 
-Effect parse(const ast::EffectConditionalForall& node, Context& context)
+Effect parse(const ast::EffectCompositeForall& node, Context& context)
 {
     context.scopes.open_scope();
     const auto parameter_list = boost::apply_visitor(ParameterListVisitor(context), node.typed_list_of_variables);
@@ -133,7 +120,7 @@ Effect parse(const ast::EffectConditionalForall& node, Context& context)
     return effect;
 }
 
-Effect parse(const ast::EffectConditionalWhen& node, Context& context)
+Effect parse(const ast::EffectCompositeWhen& node, Context& context)
 {
     context.scopes.open_scope();
     const auto condition = parse(node.goal_descriptor, context);
@@ -142,6 +129,18 @@ Effect parse(const ast::EffectConditionalWhen& node, Context& context)
     const auto effect = context.factories.get_or_create_effect_conditional_when(condition, child_effect);
     context.positions.push_back(effect, node);
     return effect;
+}
+
+Effect parse(const ast::EffectCompositeOneof& node, Context& context)
+{
+    test_undefined_requirement(RequirementEnum::NON_DETERMINISTIC, node, context);
+    context.references.untrack(RequirementEnum::NON_DETERMINISTIC);
+    auto effect_list = EffectList();
+    for (const auto& effect_node : node.possibilities)
+    {
+        effect_list.push_back(parse(effect_node, context));
+    }
+    return context.factories.get_or_create_effect_oneof(effect_list);
 }
 
 Effect parse(const ast::EffectConditional& node, Context& context)

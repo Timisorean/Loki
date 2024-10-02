@@ -104,17 +104,17 @@ size_t Hasher<const EffectNumericImpl&>::operator()(const EffectNumericImpl& e) 
     return HashCombiner()(e.get_assign_operator(), e.get_function(), e.get_function_expression());
 }
 
-size_t Hasher<const EffectConditionalForallImpl&>::operator()(const EffectConditionalForallImpl& e) const
+size_t Hasher<const EffectCompositeForallImpl&>::operator()(const EffectCompositeForallImpl& e) const
 {
     return HashCombiner()(e.get_effect(), get_sorted_vector(e.get_parameters()));
 }
 
-size_t Hasher<const EffectConditionalWhenImpl&>::operator()(const EffectConditionalWhenImpl& e) const
+size_t Hasher<const EffectCompositeWhenImpl&>::operator()(const EffectCompositeWhenImpl& e) const
 {
     return HashCombiner()(e.get_condition(), e.get_effect());
 }
 
-size_t Hasher<const EffectOneofImpl&>::operator()(const EffectOneofImpl& e) const { return HashCombiner()(get_sorted_vector(e.get_effects())); }
+size_t Hasher<const EffectCompositeOneofImpl&>::operator()(const EffectCompositeOneofImpl& e) const { return HashCombiner()(get_sorted_vector(e.get_effects())); }
 
 size_t Hasher<const EffectImpl*>::operator()(const EffectImpl* e) const
 {

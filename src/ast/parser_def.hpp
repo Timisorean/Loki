@@ -187,10 +187,9 @@ effect_production_numeric_fluent_general_type const effect_production_numeric_fl
 effect_production_type const effect_production = "effect_production";
 effect_conditional_forall_type const effect_conditional_forall = "effect_conditional_forall";
 effect_conditional_when_type const effect_conditional_when = "effect_conditional_when";
+effect_conditional_oneof_type const effect_conditional_oneof = "effect_conditional_oneof";
 effect_conditional_type const effect_conditional = "effect_conditional";
 effect_numeric_fluent_total_cost_or_effect_type const effect_numeric_fluent_total_cost_or_effect = "effect_numeric_fluent_total_cost_or_effect";
-effect_root_deterministic_type const effect_root_deterministic = "effect_root_deterministic";
-effect_root_non_deterministic_type const effect_root_non_deterministic = "effect_root_non_deterministic";
 effect_root_type const effect_root = "effect_root";
 action_symbol_type const action_symbol = "action_symbol";
 action_body_type const action_body = "action_body";
@@ -399,10 +398,8 @@ const auto assign_operator_def =
 // For action cost effects only
 const auto numeric_term_def = function_expression_number | function_expression_head;
 
-const auto effect_root_deterministic_def = ((lit('(') >> keyword_lit("and")) > *effect_numeric_fluent_total_cost_or_effect > lit(')')) | effect_conditional
+const auto effect_root_def = ((lit('(') >> keyword_lit("and")) > *effect_numeric_fluent_total_cost_or_effect > lit(')')) | effect_conditional
                              | effect_production | effect_production_numeric_fluent_total_cost;
-const auto effect_root_non_deterministic_def = ((lit('(') >> keyword_lit("oneof")) > *effect_root_deterministic > lit(')'));
-const auto effect_root_def = effect_root_non_deterministic | effect_root_deterministic;
 const auto effect_def = ((lit('(') >> keyword_lit("and")) > *effect > lit(')')) | effect_conditional | effect_production;
 const auto effect_numeric_fluent_total_cost_or_effect_def = effect_production_numeric_fluent_total_cost | effect;
 const auto effect_production_literal_def = literal;
@@ -410,9 +407,10 @@ const auto effect_production_numeric_fluent_total_cost_def = (lit('(') >> assign
                                                              > numeric_term > lit(')');
 const auto effect_production_numeric_fluent_general_def = (lit('(') >> assign_operator >> function_head >> function_expression) > lit(')');
 const auto effect_production_def = effect_production_numeric_fluent_general | effect_production_literal;
-const auto effect_conditional_forall_def = (lit('(') >> keyword_lit("forall")) > lit("(") > typed_list_of_variables > lit(')') > effect > lit(')');
-const auto effect_conditional_when_def = (lit('(') >> keyword_lit("when")) > goal_descriptor > effect > lit(')');
-const auto effect_conditional_def = effect_conditional_forall | effect_conditional_when;
+const auto effect_composite_forall_def = (lit('(') >> keyword_lit("forall")) > lit("(") > typed_list_of_variables > lit(')') > effect > lit(')');
+const auto effect_composite_when_def = (lit('(') >> keyword_lit("when")) > goal_descriptor > effect > lit(')');
+const auto effect_composite_oneof_def = (lit('(') >> keyword_lit("oneof")) > > effect > lit(')');
+const auto effect_composite_def = effect_composite_forall | effect_composite_when | effect_composite_oneof;
 
 const auto action_symbol_def = name;
 const auto action_body_def = -(keyword_lit(":precondition") > ((lit('(') >> lit(')')) | precondition_goal_descriptor))
@@ -604,12 +602,11 @@ BOOST_SPIRIT_DEFINE(effect,
                     effect_production_numeric_fluent_total_cost,
                     effect_production_numeric_fluent_general,
                     effect_production,
-                    effect_conditional_forall,
-                    effect_conditional_when,
-                    effect_conditional,
+                    effect_composite_forall,
+                    effect_composite_when,
+                    effect_composite_oenof,
+                    effect_composite,
                     effect_numeric_fluent_total_cost_or_effect,
-                    effect_root_deterministic,
-                    effect_root_non_deterministic,
                     effect_root,
                     action_symbol,
                     action_body,
@@ -997,22 +994,19 @@ struct EffectProductionNumericFluentGeneralClass : x3::annotate_on_success
 struct EffectProductionClass : x3::annotate_on_success
 {
 };
-struct EffectConditionalForallClass : x3::annotate_on_success
+struct EffectCompositeForallClass : x3::annotate_on_success
 {
 };
-struct EffectConditionalWhenClass : x3::annotate_on_success
+struct EffectCompositeWhenClass : x3::annotate_on_success
 {
 };
-struct EffectConditionalClass : x3::annotate_on_success
+struct EffectCompositeOneofClass : x3::annotate_on_success
+{
+};
+struct EffectCompositeClass : x3::annotate_on_success
 {
 };
 struct EffectNumericFluentTotalCostOrEffectClass : x3::annotate_on_success
-{
-};
-struct EffectRootDeterministicClass : x3::annotate_on_success
-{
-};
-struct EffectRootNonDeterministicClass : x3::annotate_on_success
 {
 };
 struct EffectRootClass : x3::annotate_on_success
@@ -1224,7 +1218,7 @@ parser::requirement_equality_type const& requirement_equality() { return parser:
 parser::requirement_existential_preconditions_type const& requirement_existential_preconditions() { return parser::requirement_existential_preconditions; }
 parser::requirement_universal_preconditions_type const& requirement_universal_preconditions() { return parser::requirement_universal_preconditions; }
 parser::requirement_quantified_preconditions_type const& requirement_quantified_preconditions() { return parser::requirement_quantified_preconditions; }
-parser::requirement_conditional_effects_type const& requirement_conditional_effects() { return parser::requirement_conditional_effects; }
+parser::requirement_composite_effects_type const& requirement_composite_effects() { return parser::requirement_composite_effects; }
 parser::requirement_fluents_type const& requirement_fluents() { return parser::requirement_fluents; }
 parser::requirement_object_fluents_type const& requirement_object_fluents() { return parser::requirement_object_fluents; }
 parser::requirement_numeric_fluents_type const& requirement_numeric_fluents() { return parser::requirement_numeric_fluents; }
@@ -1363,9 +1357,7 @@ parser::effect_numeric_fluent_total_cost_or_effect_type const& effect_numeric_fl
 {
     return parser::effect_numeric_fluent_total_cost_or_effect;
 }
-parser::effect_root_deterministic_type const& effect_root_deterministic() { return parser::effect_root_deterministic; }
-parser::effect_root_non_deterministic_type const& effect_root_non_deterministic() { return parser::effect_root_non_deterministic; }
-parser::effect_root_type const& effect_root() { return parser::effect_root; }
+parrser::effect_root_type const& effect_root() { return parser::effect_root; }
 
 parser::action_symbol_type const& action_symbol() { return parser::action_symbol; }
 parser::action_body_type const& action_body() { return parser::action_body; }

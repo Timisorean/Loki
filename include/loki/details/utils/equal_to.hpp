@@ -159,21 +159,21 @@ struct EqualTo<const EffectNumericImpl&>
 };
 
 template<>
-struct EqualTo<const EffectConditionalForallImpl&>
+struct EqualTo<const EffectCompositeForallImpl&>
 {
-    bool operator()(const EffectConditionalForallImpl& l, const EffectConditionalForallImpl& r) const;
+    bool operator()(const EffectCompositeForallImpl& l, const EffectCompositeForallImpl& r) const;
 };
 
 template<>
-struct EqualTo<const EffectConditionalWhenImpl&>
+struct EqualTo<const EffectCompositeWhenImpl&>
 {
-    bool operator()(const EffectConditionalWhenImpl& l, const EffectConditionalWhenImpl& r) const;
+    bool operator()(const EffectCompositeWhenImpl& l, const EffectCompositeWhenImpl& r) const;
 };
 
 template<>
-struct EqualTo<const EffectOneofImpl&>
+struct EqualTo<const EffectCompositeOneofImpl&>
 {
-    bool operator()(const EffectOneofImpl& l, const EffectOneofImpl& r) const;
+    bool operator()(const EffectCompositeOneofImpl& l, const EffectCompositeOneofImpl& r) const;
 };
 
 template<>

@@ -183,17 +183,17 @@ Effect PDDLFactories::get_or_create_effect_numeric(AssignOperatorEnum assign_ope
 
 Effect PDDLFactories::get_or_create_effect_conditional_forall(ParameterList parameters, Effect effect)
 {
-    return m_factories.get<EffectFactory>().get_or_create<EffectConditionalForallImpl>(std::move(parameters), std::move(effect));
+    return m_factories.get<EffectFactory>().get_or_create<EffectCompositeForallImpl>(std::move(parameters), std::move(effect));
 }
 
 Effect PDDLFactories::get_or_create_effect_conditional_when(Condition condition, Effect effect)
 {
-    return m_factories.get<EffectFactory>().get_or_create<EffectConditionalWhenImpl>(std::move(condition), std::move(effect));
+    return m_factories.get<EffectFactory>().get_or_create<EffectCompositeWhenImpl>(std::move(condition), std::move(effect));
 }
 
 Effect PDDLFactories::get_or_create_effect_oneof(EffectList effects_)
 {
-    return m_factories.get<EffectFactory>().get_or_create<EffectOneofImpl>(std::move(effects_));
+    return m_factories.get<EffectFactory>().get_or_create<EffectCompositeOneofImpl>(std::move(effects_));
 }
 
 Action PDDLFactories::get_or_create_action(std::string name,

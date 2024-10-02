@@ -183,21 +183,21 @@ struct Hasher<const EffectNumericImpl&>
 };
 
 template<>
-struct Hasher<const EffectConditionalForallImpl&>
+struct Hasher<const EffectCompositeForallImpl&>
 {
-    size_t operator()(const EffectConditionalForallImpl& e) const;
+    size_t operator()(const EffectCompositeForallImpl& e) const;
 };
 
 template<>
-struct Hasher<const EffectConditionalWhenImpl&>
+struct Hasher<const EffectCompositeWhenImpl&>
 {
-    size_t operator()(const EffectConditionalWhenImpl& e) const;
+    size_t operator()(const EffectCompositeWhenImpl& e) const;
 };
 
 template<>
-struct Hasher<const EffectOneofImpl&>
+struct Hasher<const EffectCompositeOneofImpl&>
 {
-    size_t operator()(const EffectOneofImpl& e) const;
+    size_t operator()(const EffectCompositeOneofImpl& e) const;
 };
 
 template<>

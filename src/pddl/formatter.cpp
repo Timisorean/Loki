@@ -326,7 +326,7 @@ void DefaultFormatter::write(const EffectNumericImpl& element, const DefaultForm
     out << ")";
 }
 
-void DefaultFormatter::write(const EffectConditionalForallImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
+void DefaultFormatter::write(const EffectCompositeForallImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
 {
     out << "(forall (";
     for (size_t i = 0; i < element.get_parameters().size(); ++i)
@@ -340,7 +340,7 @@ void DefaultFormatter::write(const EffectConditionalForallImpl& element, const D
     out << ")";
 }
 
-void DefaultFormatter::write(const EffectConditionalWhenImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
+void DefaultFormatter::write(const EffectCompositeWhenImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
 {
     out << "(when ";
     write(*element.get_condition(), options, out);
@@ -349,7 +349,7 @@ void DefaultFormatter::write(const EffectConditionalWhenImpl& element, const Def
     out << ")";
 }
 
-void DefaultFormatter::write(const EffectOneofImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
+void DefaultFormatter::write(const EffectCompositeOneofImpl& element, const DefaultFormatterOptions& options, std::ostream& out) const
 {
     out << "(oneof ";
     for (size_t i = 0; i < element.get_effects().size(); ++i)
@@ -743,9 +743,9 @@ template class StreamWriter<DomainImpl>;
 template class StreamWriter<EffectLiteralImpl>;
 template class StreamWriter<EffectAndImpl>;
 template class StreamWriter<EffectNumericImpl>;
-template class StreamWriter<EffectConditionalForallImpl>;
-template class StreamWriter<EffectConditionalWhenImpl>;
-template class StreamWriter<EffectOneofImpl>;
+template class StreamWriter<EffectCompositeForallImpl>;
+template class StreamWriter<EffectCompositeWhenImpl>;
+template class StreamWriter<EffectCompositeOneofImpl>;
 template class StreamWriter<EffectImpl>;
 template class StreamWriter<FunctionExpressionNumberImpl>;
 template class StreamWriter<FunctionExpressionBinaryOperatorImpl>;
